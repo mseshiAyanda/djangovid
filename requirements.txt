@@ -1,7 +1,7 @@
 asgiref
 Django
 djangorestframework
-
+numpy
 opencv-python
 pytz
 sqlparse
