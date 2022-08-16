@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <title>Video Live Stream</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+          <div class="col">
+            <h4>Webcam:</h4>
+            <img src="{% url 'video_feed' %}" height = 360 width = 480>
+            <hr>
+            <h4>IPCam:</h4>
+            <img src="{% url 'webcam_feed' %}" height = 360 width = 480>
+          </div>
+          <div class="col">
+            <h4>Table</h4>
+            <table class="table table-striped" id="data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Cam Name</th>
+                  <th scope="col">Timestamp</th>
+                  <th scope="col">Framecount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td id="webcam-name">Mark</td>
+                  <td id="webcam-timestamp">Otto</td>
+                  <td id="webcam-framecount">@mdo</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td id="ipcam-name">Jacob</td>
+                  <td id="ipcam-timestamp">Thornton</td>
+                  <td id="ipcam-framecount">@fat</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+    <hr>
+  </body>
+</html>
+<script type="text/javascript">
+function liveUpdate(){
+  setInterval(function(){
+    fetch("http://localhost:8000/api/detail/1/").then(function(response){
+      return response.json();
+    }).then(function(data){
+      let ele = document.getElementById('webcam-name').textContent=data.cam_name;
+      let ele1 = document.getElementById('webcam-timestamp').textContent=data.timestamp;
+      console.log(data.timestamp);
+      let ele2 = document.getElementById('webcam-framecount').textContent=data.framecount;
+
+    }).catch(function(error){
+      console.log(error);
+    })
+    fetch("http://localhost:8000/api/detail/2/").then(function(response){
+      return response.json();
+    }).then(function(data){
+      let ele = document.getElementById('ipcam-name').textContent=data.cam_name;
+      let ele1 = document.getElementById('ipcam-timestamp').textContent=data.timestamp;
+      let ele2 = document.getElementById('ipcam-framecount').textContent=data.framecount;
+
+    }).catch(function(error){
+      console.log(error);
+    })
+  },500);
+};
+document.addEventListener("DOMContentLoaded",function(){
+  liveUpdate();
+});
+</script>
